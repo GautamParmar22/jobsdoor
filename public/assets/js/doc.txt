@@ -1,0 +1,46 @@
+Vijay S, 4:17 PM
+https://codeseven.github.io/toastr/
+
+Vijay S, 5:09 PM
+<!-- Message changes -->
+@if (\Session::has('success'))
+<div class="alert alert-success" style="display: none;">
+    <ul>
+        <li id="success-msg">{!! \Session::get('success') !!}</li>
+    </ul>
+</div>
+@endif
+@if (session('error'))
+<div class="alert alert-danger" style="display: none;">
+    <li id="error-msg">{{ session('error') }}</li>
+</div>
+@endif
+
+Vijay S, 5:09 PM, Edited
+<script type="text/javascript">
+    $(document).ready(function() {
+
+if ($('#success-msg').text() && $('#success-msg').text() != "") {
+            toastr.success($('#success-msg').text());
+        }
+        if ($('#error-msg').text() && $('#error-msg').text() != "") {
+            toastr.error($('#error-msg').text());
+        }
+return  Redirect::to('/dashboard')->with('success', 'You have logged in successfully.');
+
+return  Redirect::to('/login')->with('error',  'Invalid Credentials.');
+
+Vijay S, 41 min
+//Set sidebar menu active
+        $('.main_menu li a').each(function() {
+            var CurrentUrl = document.URL;
+            var CurrentUrlEnd = CurrentUrl.split('/').filter(Boolean).pop();
+
+            var ThisUrl = $(this).attr('href');
+            var ThisUrlEnd = ThisUrl.split('/').filter(Boolean).pop();
+            if (ThisUrlEnd == CurrentUrlEnd) {
+                $(this).closest('li').addClass('active');
+                $(this).closest('ul').css('display', 'block');
+                $(this).closest('ul').parent().addClass('active');
+            }
+        })
