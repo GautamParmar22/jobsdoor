@@ -1,0 +1,64 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # ✅ Step 2: Setup PHP environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, exif, pcntl, bcmath, gd, zip
+          coverage: none
+
+      # ✅ Step 3: Install Composer Dependencies
+      - name: Install dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist
+
+      # ✅ Step 4: Set up environment file
+      - name: Setup environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # ✅ Step 5: Setup Database (MySQL)
+      - name: Setup MySQL database
+        run: |
+          sudo systemctl start mysql
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS testing;"
+          php artisan migrate --force
+        env: |
+           DB_CONNECTION: mysql
+           DB_HOST: 127.0.0.1
+           DB_PORT: 3306
+           DB_DATABASE=jobsdoor
+           DB_USERNAME=root
+           DB_PASSWORD=
+
+
+      # ✅ Step 6: Cache Configuration
+      - name: Cache configuration
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+
+      # ✅ Step 7: Run Tests
+      - name: Run tests
+        run: php artisan test
