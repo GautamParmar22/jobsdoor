@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Closure;
 use Session;
-use DB;
+use Illuminate\Support\Facades\DB;
         
 class IsLogin {
 

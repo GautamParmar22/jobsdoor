@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 //use Auth;
 use Validator;
-use Redirect;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
