@@ -275,14 +275,8 @@ class JobController extends Controller
             if (!empty($main_data[2])) {
                 $browesalljobpost->where('emp.industry', 'LIKE', '%' . $main_data[2]->industry . '%');
             }
-<<<<<<< HEAD
-            if(!empty($main_data[0]))
-            {
-                    $get_job_type = implode(separator: ',',array: $main_data[0]);
-=======
             if (!empty($main_data[0])) {
                 $get_job_type = implode(',', $main_data[0]);
->>>>>>> 98fc446bb61e5fa522366f483ea5c054afe5e736
 
                 $browesalljobpost->whereIn('job_posts.type_of_job', [$get_job_type]);
             }
