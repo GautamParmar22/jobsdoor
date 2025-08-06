@@ -295,7 +295,7 @@ class JobController extends Controller
             }
             if(!empty($main_data[0]))
             {
-                    $get_job_type = implode(',',$main_data[0]);
+                    $get_job_type = implode(separator: ',',array: $main_data[0]);
 
                     $browesalljobpost->whereIn('job_posts.type_of_job',[$get_job_type]);
             }

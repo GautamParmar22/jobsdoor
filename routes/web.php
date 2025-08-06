@@ -6,9 +6,9 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\admin\DashboardCotroller;
 //header('Access-Control-Allow-Origin:  *');
-header('Access-Control-Allow-Origin:  http://localhost:4200');
-header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
-header('Access-Control-Allow-Methods:  GET, POST, PUT, DELETE, OPTIONS');
+// header('Access-Control-Allow-Origin:  http://localhost:4200');
+// header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
+// header('Access-Control-Allow-Methods:  GET, POST, PUT, DELETE, OPTIONS');
 //use Illuminate\Routing\Route;
 //use  App\Http\Middleware\IsLogin;
 
