@@ -112,7 +112,6 @@ class JobController extends Controller
     {
         $req = $request->all();
 
-
         //personal details (01)
         $firstname = $req['personal_details']['firstname'];
         $lastname = $req['personal_details']['lastname'];
@@ -133,7 +132,7 @@ class JobController extends Controller
         }
         $fullname = $firstname . ' ' . $lastname;
         $EmailValid = DB::table('users')->select('*')->where('email', $req['personal_details']['email'])->get()->toArray();
-// dd( $EmailValid);
+        // dd( $EmailValid);
         //employ history (02)
         $recent_employement = $request->input('emp_history[History][recent_employement]');
         $industry = $request->input('emp_history[History][industry]');
@@ -369,7 +368,7 @@ class JobController extends Controller
         $tell_about_self = $req['tell_about_self'];
 
         $data = array('first_name' => $firstname, 'last_name' => $lastname, 'mobile_no' => $mobile_no, 'email' => $email, 'total_exp' => $total_exp, 'relavant_exp' => $relavent_exp, 'current_ctc' => $current_ctc, 'expected_ctc' => $expected_ctc, 'notice_period' => $notice_period, 'upload_resume' => $upload_resume, 'tell_about_self' => $tell_about_self);
-        
+
         $user = DB::table('applied_job')->insert($data);
         return  Redirect::to('thank-you-page');
     }

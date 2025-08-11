@@ -54,7 +54,17 @@ class DashboardCotroller extends Controller
         $inactiveCandidateCount = $candidateQuery->where('status', 0)->count();
         $totalCandidateCount = $candidateQuery->count();
 
-        return view('Admin.dashboard', compact('user', 'totalusers', 'employer', 'candidate', 'recentusers', 'totalcandidate', 'recentcandidate', 'activecandidate', 'inactivecandidate'));
+        return view('Admin.dashboard', [
+            'dashboard_data' => $user,
+            'totsluser' => $totalUsers,
+            'employer' => $employerCount,
+            'candidate' => $candidateCount,
+            'recentusers' => $recentUsers,
+            'totalcandidate' => $totalCandidateCount,
+            'recentcandidate' => $recentCandidates,
+            'activecandidate' => $activeCandidateCount,
+            'inactivecandidate' => $inactiveCandidateCount,
+        ]);
     }
 
     public function AccountData()
