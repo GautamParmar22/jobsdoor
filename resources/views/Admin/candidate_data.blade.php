@@ -38,7 +38,7 @@
 											</thead>
 											<tbody>
 												@foreach($allcandidate as $candidate)
-												<?php dump($candidate); ?>
+												
 													<tr>												
 														<td class="cell"><span class="truncate">{{@$candidate->name}}</span></td>
 														<td class="cell">{{@$candidate->email}}</td>

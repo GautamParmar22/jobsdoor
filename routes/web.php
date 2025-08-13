@@ -51,12 +51,12 @@ Route::group(['middleware' => ['App\Http\Middleware\IsLogin']], function () {
     Route::post('update-profile-action', [DashboardCotroller::class, 'ManageProfile']);
     Route::post('change-password-action', [DashboardCotroller::class, 'changePassword']);
     Route::get('all-users-page', [DashboardCotroller::class, 'allUserData']);
-    Route::post('delete-users/{id}', [DashboardCotroller::class, 'deleteUsers']);
+    Route::get('delete-users/{id}', [DashboardCotroller::class, 'deleteUsers']);
     Route::get('employer-data-page', [DashboardCotroller::class, 'employerData']);
     Route::post('delete-employers/{id}', [DashboardCotroller::class, 'deleteEmployers']);
     Route::get('candidate-data-page', [DashboardCotroller::class, 'candidateData']);
-    Route::post('delete-candidates/{id}', [DashboardCotroller::class, 'deleteCandidates']);
-    Route::post('view-employers/{id}', [DashboardCotroller::class, 'viewEmployers']);
+    Route::get('delete-candidates/{id}', [DashboardCotroller::class, 'deleteCandidates']);
+    Route::get('view-employers/{id}', [DashboardCotroller::class, 'viewEmployers']);
     Route::get('view-candidate/{id}', [DashboardCotroller::class, 'viewCandidate']);
     Route::get('edit-employer/{id}', [DashboardCotroller::class, 'employetEdit']);
     Route::post('update/{id}', [DashboardCotroller::class, 'updateEmpData']);
