@@ -75,6 +75,8 @@
  @stop
 @section('pages.separate_script')
 <script type="text/javascript">
-	$("#users").DataTable();
+	$(document).ready(function() {
+        $("#users").DataTable();
+    });
 </script>
 @stop

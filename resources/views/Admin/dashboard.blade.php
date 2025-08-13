@@ -5,12 +5,12 @@
     color: #eb0000;
 }
 .green{
-	color: #7CFC00;
+	color: #14df80b9;
 }
 </style>    
 <div class="app-wrapper">
 	<div class="app-content pt-3 p-md-3 p-lg-4">
-		 @if($dashboard_data->role_type == 1)
+		 @if($user->role_type == 1)
 				<div class="container-xl">
 			    <h1 class="app-page-title">Dashboard</h1>   
 			    <div class="row g-4 mb-4">

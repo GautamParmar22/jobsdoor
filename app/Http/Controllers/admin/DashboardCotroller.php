@@ -34,27 +34,33 @@ class DashboardCotroller extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function DashboardPage(Request $request)
-    {
-        $user = Auth::user();
+    {   
+             $user = Auth::user();
+            $counts = User::selectRaw("
+                    COUNT(*) as total_users,
+                    SUM(CASE WHEN role_type = 2 THEN 1 ELSE 0 END) as employers,
+                    SUM(CASE WHEN role_type = 3 THEN 1 ELSE 0 END) as candidates,
+                    SUM(CASE WHEN role_type = 3 AND status = 1 THEN 1 ELSE 0 END) as active_candidates,
+                    SUM(CASE WHEN role_type = 3 AND status = 0 THEN 1 ELSE 0 END) as inactive_candidates
+                ")
+                ->where('role_type', '!=', 1)
+                ->where('is_delete', 0)
+                ->first();
 
-        // Base query for non-admin, non-deleted users
-        $baseUserQuery = User::where('role_type', '!=', 1)->where('is_delete', 0);
+            $recentUsers      = User::where('role_type', '!=', 1)->where('is_delete', 0)->latest()->limit(5)->get();
+            $recentCandidates = User::where('role_type', 3)->where('is_delete', 0)->latest()->limit(5)->get();
 
-        // Count data
-        $totalUsers = $baseUserQuery->count();
-        $employerCount = $baseUserQuery->where('role_type', 2)->count();
-        $candidateCount = $baseUserQuery->where('role_type', 3)->count();
-
-        // Candidate base query
-        $candidateQuery = User::where('role_type', 3)->where('is_delete', 0);
-
-        $recentUsers = $baseUserQuery->orderByDesc('id')->limit(5)->get();
-        $recentCandidates = $candidateQuery->orderByDesc('id')->limit(5)->get();
-        $activeCandidateCount = $candidateQuery->where('status', 1)->count();
-        $inactiveCandidateCount = $candidateQuery->where('status', 0)->count();
-        $totalCandidateCount = $candidateQuery->count();
-
-        return view('Admin.dashboard', compact('user', 'totalusers', 'employer', 'candidate', 'recentusers', 'totalcandidate', 'recentcandidate', 'activecandidate', 'inactivecandidate'));
+            return view('Admin.dashboard', [
+                'user'              => $user,
+                'totsluser'         => $counts->total_users,
+                'employer'          => $counts->employers,
+                'candidate'         => $counts->candidates,
+                'recentusers'       => $recentUsers,
+                'total_candidate'   => $counts->candidates,
+                'recent_candidate'  => $recentCandidates,
+                'active_candidate'  => $counts->active_candidates,
+                'inactive_candidate'=> $counts->inactive_candidates,
+            ]);
     }
 
     public function AccountData()
@@ -121,26 +127,15 @@ class DashboardCotroller extends Controller
     }
 
     public function allUserData(Request $request)
-    {
-        $req = $request->all();
-
+    {      
         $alluserdata = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
             ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
             ->leftjoin('personal_details as candidate', 'users.id', '=', 'candidate.user_id')
             ->where('role_type', '!=', 1)
             ->where('is_delete', 0)
-            ->get()
-            ->toArray();
-
-        $allcandidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
-            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
-            ->leftjoin('personal_details as candidate', 'users.id', '=', 'candidate.user_id')
-            ->where('role_type', '=', 3)
-            ->where('is_delete', 0)
-            ->get()
-            ->toArray();
-
-        return view('Admin.allusers', ['alluserdata' => $alluserdata, 'all_candidate' => $allcandidate]);
+            ->get();   
+        
+        return view('Admin.allusers', ['alluserdata' => $alluserdata]);
     }
 
     public function deleteUsers(Request $request, $id)
@@ -158,11 +153,11 @@ class DashboardCotroller extends Controller
         $req = $request->all();
 
         $allemployers = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
-            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
-            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
-            ->where('role_type', '=', 2)
-            ->where('is_delete', 0)
-            ->get()->toArray();
+                            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
+                            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
+                            ->where('role_type', '=', 2)
+                            ->where('is_delete', 0)
+                            ->get();
 
         return view('Admin.employer_data', ['allemployers' => $allemployers]);
     }
@@ -181,12 +176,12 @@ class DashboardCotroller extends Controller
     {
         $req = $request->all();
         $allcandidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
-            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
-            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
-            ->where('role_type', '=', 3)
-            ->where('is_delete', 0)
-            ->get()->toArray();
-
+                            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
+                            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
+                            ->where('role_type', '=', 3)
+                            ->where('is_delete', 0)
+                            ->get();
+      
         return view('Admin.candidate_data', ['allcandidate' => $allcandidate]);
     }
     public function  deleteCandidates(Request $request, $id)
@@ -216,17 +211,10 @@ class DashboardCotroller extends Controller
 
         $viewCandidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name')->where('users.id', $id)->get()->first();
 
-        $getPersonalDetails = PersonalDetail::select('*')->where('user_id', '=', $id)->first();
-
-
-        $getEducationDetails = EducationDetail::select('*')->where('user_id', '=', $id)->first();
-
-
-        $getEmpHistory = EmpHistory::select('*')->where('user_id', '=', $id)->get()->toArray();
-
-
-        $getJobPreference = JobPreference::select('*')->where('user_id', '=', $id)->get()->first();
-
+        $getPersonalDetails = PersonalDetail::where('user_id', '=', $id)->first();
+        $getEducationDetails = EducationDetail::where('user_id', '=', $id)->first();
+        $getEmpHistory = EmpHistory::where('user_id', '=', $id)->get()->toArray();
+        $getJobPreference = JobPreference::where('user_id', '=', $id)->get()->first();
 
         return view('Admin.candidate_view', ['candiadte_view' => $viewCandidate, 'getPersonalDetails' => $getPersonalDetails, 'education_details' => $getEducationDetails, 'emp_history' => $getEmpHistory, 'job_preference' => $getJobPreference]);
     }
@@ -242,9 +230,7 @@ class DashboardCotroller extends Controller
     }
     public function updateEmpData(Request $request, $id)
     {
-
         $req = $request->all();
-
         //form 1 data
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
@@ -284,7 +270,7 @@ class DashboardCotroller extends Controller
 
         $editEducationDetails = EducationDetail::select('*')->where('user_id', '=', $id)->first();
 
-        $editEmpHistory = EmpHistory::select('*')->where('user_id', '=', $id)->get()->toArray();
+        $editEmpHistory = EmpHistory::select('*')->where('user_id', '=', $id)->get();
 
         $editJobPreference = JobPreference::select('*')->where('user_id', '=', $id)->get()->first();
 
@@ -294,7 +280,7 @@ class DashboardCotroller extends Controller
     public function updateCndData(Request $request, $id)
     {
         $req = $request->all();
-
+dd($req);
         //Candidate Personal Details data 
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');

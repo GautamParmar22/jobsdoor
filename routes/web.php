@@ -5,9 +5,9 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\admin\DashboardCotroller;
 
-header('Access-Control-Allow-Origin:  http://localhost:4200');
-header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
-header('Access-Control-Allow-Methods:  GET, POST, PUT, DELETE, OPTIONS');
+// header('Access-Control-Allow-Origin:  http://localhost:4200');
+// header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
+// header('Access-Control-Allow-Methods:  GET, POST, PUT, DELETE, OPTIONS');
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +19,8 @@ header('Access-Control-Allow-Methods:  GET, POST, PUT, DELETE, OPTIONS');
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::resource('employer', \App\Http\Controllers\EmployerController::class);
 
 // Candidate and Employer Routes
 Route::get('/', [JobController::class, 'index']);
@@ -48,13 +50,13 @@ Route::group(['middleware' => ['App\Http\Middleware\IsLogin']], function () {
     Route::get('dashboard-page', [DashboardCotroller::class, 'DashboardPage']);
     Route::post('update-profile-action', [DashboardCotroller::class, 'ManageProfile']);
     Route::post('change-password-action', [DashboardCotroller::class, 'changePassword']);
-    Route::post('all-users-page', [DashboardCotroller::class, 'allUserData']);
-    Route::post('delete-users/{id}', [DashboardCotroller::class, 'deleteUsers']);
+    Route::get('all-users-page', [DashboardCotroller::class, 'allUserData']);
+    Route::get('delete-users/{id}', [DashboardCotroller::class, 'deleteUsers']);
     Route::get('employer-data-page', [DashboardCotroller::class, 'employerData']);
     Route::post('delete-employers/{id}', [DashboardCotroller::class, 'deleteEmployers']);
-    Route::post('candidate-data-page', [DashboardCotroller::class, 'candidateData']);
-    Route::post('delete-candidates/{id}', [DashboardCotroller::class, 'deleteCandidates']);
-    Route::post('view-employers/{id}', [DashboardCotroller::class, 'viewEmployers']);
+    Route::get('candidate-data-page', [DashboardCotroller::class, 'candidateData']);
+    Route::get('delete-candidates/{id}', [DashboardCotroller::class, 'deleteCandidates']);
+    Route::get('view-employers/{id}', [DashboardCotroller::class, 'viewEmployers']);
     Route::get('view-candidate/{id}', [DashboardCotroller::class, 'viewCandidate']);
     Route::get('edit-employer/{id}', [DashboardCotroller::class, 'employetEdit']);
     Route::post('update/{id}', [DashboardCotroller::class, 'updateEmpData']);
