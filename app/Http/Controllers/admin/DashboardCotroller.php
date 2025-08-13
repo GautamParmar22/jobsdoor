@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\Helper;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ use App\Models\JobPreference;
 use App\Models\PersonalDetail;
 use App\Models\EmpHistory;
 use App\Models\JobPost;
-
+use PHPUnit\TextUI\Help;
 
 class DashboardCotroller extends Controller
 {
