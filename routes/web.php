@@ -50,11 +50,11 @@ Route::group(['middleware' => ['App\Http\Middleware\IsLogin']], function () {
     Route::get('dashboard-page', [DashboardCotroller::class, 'DashboardPage']);
     Route::post('update-profile-action', [DashboardCotroller::class, 'ManageProfile']);
     Route::post('change-password-action', [DashboardCotroller::class, 'changePassword']);
-    Route::post('all-users-page', [DashboardCotroller::class, 'allUserData']);
+    Route::get('all-users-page', [DashboardCotroller::class, 'allUserData']);
     Route::post('delete-users/{id}', [DashboardCotroller::class, 'deleteUsers']);
     Route::get('employer-data-page', [DashboardCotroller::class, 'employerData']);
     Route::post('delete-employers/{id}', [DashboardCotroller::class, 'deleteEmployers']);
-    Route::post('candidate-data-page', [DashboardCotroller::class, 'candidateData']);
+    Route::get('candidate-data-page', [DashboardCotroller::class, 'candidateData']);
     Route::post('delete-candidates/{id}', [DashboardCotroller::class, 'deleteCandidates']);
     Route::post('view-employers/{id}', [DashboardCotroller::class, 'viewEmployers']);
     Route::get('view-candidate/{id}', [DashboardCotroller::class, 'viewCandidate']);

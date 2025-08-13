@@ -38,20 +38,21 @@
 											</thead>
 											<tbody>
 												@foreach($allcandidate as $candidate)
+												<?php dump($candidate); ?>
 													<tr>												
-														<td class="cell"><span class="truncate">{{$candidate->name}}</span></td>
-														<td class="cell">{{$candidate->email}}</td>
+														<td class="cell"><span class="truncate">{{@$candidate->name}}</span></td>
+														<td class="cell">{{@$candidate->email}}</td>
 														<td class="cell">
 															<span>
 																<?php 
-																    if($candidate->role_type==2 ){echo "Employer" ;}else{echo "Candidate";}
+																    if(@$candidate->role_type==2 ){echo "Employer" ;}else{echo "Candidate";}
 																 ?>
 															</span>
 														</td>
 														<td class="cell">
 															<span>
 															     <?php 
-															       if($candidate->role_type==2 ){ echo $candidate->emp_mobile; }else{ echo $candidate->cnd_mobile; }
+															       if(@$candidate->role_type==2 ){ echo @$candidate->emp_mobile; }else{ echo @$candidate->cnd_mobile; }
 															     ?>
 															</span>
 														</td>
@@ -65,10 +66,9 @@
 															?>
 														</td>
 														<td class="cell">
-															<a href="{{url('view-candidate/'.base64_encode($candidate->id))}}"><i class="fa fa-eye" aria-hidden="true" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a> 
-															<a href="{{url('edit-candidate/'.
-															$candidate->id)}}" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"><i class="fa fa-edit"></i></a>
-															<a href="{{url('delete-candidates/'.$candidate->id)}}"  onclick="alert('Are you sure to Delete ?');"><i class="fa fa-trash" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a>
+															<a href="{{url('view-candidate/'.base64_encode(@$candidate->id))}}"><i class="fa fa-eye" aria-hidden="true" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a> 
+															<a href="{{url('edit-candidate/'.@$candidate->id)}}" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"><i class="fa fa-edit"></i></a>
+															<a href="{{url('delete-candidates/'.@$candidate->id)}}"  onclick="alert('Are you sure to Delete ?');"><i class="fa fa-trash" style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a>
 														</td>
 													</tr>
 												@endforeach
