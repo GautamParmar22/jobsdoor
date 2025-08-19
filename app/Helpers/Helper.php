@@ -54,4 +54,11 @@ class Helper
 
         return $output;
     }
+
+
+    public static function fail($data, $message)
+    {
+        // Return a response with the error message
+        return response()->json(['error' => $message], 500);
+    }
 }

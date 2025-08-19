@@ -3,7 +3,7 @@
 <div class="app-wrapper">
 	<div class="app-content pt-3 p-md-3 p-lg-4">
 		<div class="container-xl">
-			@if (\Session::has('success'))
+			@if(\Session::has('success'))
 				<div class="alert alert-success" style="display: none;">
 					<ul>
 						<li id="success-msg">{!! \Session::get('success') !!}</li>
@@ -17,66 +17,69 @@
 			@endif
 			<div class="row g-3 mb-4 align-items-center justify-content-between">
 				<div class="col-auto">
-					<h1 class="app-page-title mb-0">Job Post List</h1>
+					<h1 class="app-page-title mb-0">Candidates</h1>
 				</div>
-				<a href="{{url('job-post')}}" align="right"><button type="button" class="btn btn-primary">Add Job
-						Post</button></a>
 			</div><!--//row-->
 			<div class="tab-content" id="orders-table-tab-content">
 				<div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
 					<div class="app-card app-card-orders-table shadow-sm mb-5">
 						<div class="app-card-body">
-							<div class="table-responsive">								
+							<div class="table-responsive">
 								<table id="users" class="table app-table-hover mb-0 text-left">
 									<thead>
 										<tr>
-											<th class="cell">Job name</th>
-											<th class="cell">No of vacancy</th>
-											<th class="cell">Type of job</th>
-											<th class="cell">Description of job</th>
-											<th class="cell">Key skill</th>
-											<th class="cell">Qualification</th>
-											<th class="cell">Salary</th>
-											<th class="cell">Location</th>
-											<th class="cell">Describe PDF</th>
+											<th class="cell">Name</th>
+											<th class="cell">Email</th>
+											<th class="cell">Role Type</th>
+											<th class="cell">Phone</th>
 											<th class="cell">Status</th>
 											<th class="cell">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										@if(!empty($job_posts))
-										@foreach($job_posts as $post)
+										@foreach($allcandidate as $candidate)
+
 											<tr>
-												<td class="cell">{{$post->job_name}}</td>
-												<td class="cell">{{$post->no_of_vacancy}}</td>
-												<td class="cell">{{$post->type_of_job}}</td>
-												<td class="cell">{{$post->job_description}}</td>
-												<td class="cell">{{$post->key_skills}}</td>
-												<td class="cell">{{$post->qualification}}</td>
-												<td class="cell">{{$post->salary_to}}</td>
-												<td class="cell">{{$post->location}}</td>
-												<td class="cell">{{$post->indroduction_pdf}}</td>
+												<td class="cell"><span class="truncate">{{@$candidate->name}}</span></td>
+												<td class="cell">{{@$candidate->email}}</td>
 												<td class="cell">
-													@if($post->status)
-														<span class="badge bg-success">Active</span>
+													<span>
+														@if(@$candidate->role_type == 2)
+															<span>Employer</span>
+														@else
+															<span>Candidate</span>
+														@endif
+													</span>
+												</td>
+												<td class="cell">
+													<span>
+														@if(@$candidate->role_type == 2)
+															{{ @$candidate->emp_mobile }}
+														@else
+															{{ @$candidate->cnd_mobile }}
+														@endif;
+													</span>
+												</td>
+												<td class="cell">
+													@if($candidate->status)
+														<span class="badge bg-success">Active</span>;
 													@else
-														<span class="badge bg-danger">Inactive</span>
+														<span class="badge bg-danger">Inactive</span>;
 													@endif
 												</td>
 												<td class="cell">
-													<a href="{{url('view-job-post/' . base64_encode($post->id))}}"><i
+													<a href="{{url('view-candidate/' . base64_encode(@$candidate->id))}}"><i
 															class="fa fa-eye" aria-hidden="true"
-															style="color:gray; display: inline-block;"></i></a>
-													<a href="{{url('edit-job-post/' . base64_encode($post->id))}}"
-														style="color:gray; display: inline-block;"><i
+															style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a>
+													<a href="{{url('edit-candidate/' . @$candidate->id)}}"
+														style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"><i
 															class="fa fa-edit"></i></a>
-													<a href="{{url('delete-job-post/' . base64_encode($post->id))}}"
+													<a href="{{url('delete-candidates/' . @$candidate->id)}}"
 														onclick="alert('Are you sure to Delete ?');"><i class="fa fa-trash"
-															style="color:gray; display: inline-block;"></i></a>
+															style="color:gray; display: inline-block; margin: 0 10px 0 0; font-size: 1.2em;"></i></a>
 												</td>
 											</tr>
 										@endforeach
-										@endif
 									</tbody>
 								</table>
 							</div><!--//table-responsive-->

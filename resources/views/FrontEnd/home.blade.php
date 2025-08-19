@@ -53,9 +53,7 @@
                         <h3 class="fw4">
                          JobsDoor.com is reinventing the recruiting industry by offering assistance in much needed areas and easing up the overall process.
                         </h3>
-                        <a href="#" class="site-button">Read More</a>
-                        <!--<p class="m-b15">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</p>
-                        <p class="m-b15">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</p> -->
+                        <a href="#" class="site-button">Read More</a>                    
                 
                         <div id="abouts" class="mb-2 flex papabear:mr-3 mamabear:mr-3 babybear:flex-wrap" >
                             <dt class="font-sans text-md font-bold text-color-text break-words w-40 papabear:flex-shrink-0 papabear:mr-3 mamabear:flex-shrink-0 mamabear:mr-3 babybear:mb-1">

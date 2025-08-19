@@ -213,8 +213,7 @@ class JobController extends Controller
     public function displayBrowesJob(Request $request)
     {
         $req = $request->all();
-        $browesalljobpost = DB::table('job_posts')
-            ->select('job_posts.*', 'emp.company_name')
+        $browesalljobpost = JobPost::select('job_posts.*', 'emp.company_name')
             ->leftjoin('employers as emp', 'emp.user_id', '=', 'job_posts.user_id')
             ->where('job_posts.deleted_at', '=', null);
         if (isset($req['search_by'])) {
@@ -240,8 +239,7 @@ class JobController extends Controller
         $per_page = 2;
         if (!empty($req['page']) && $req['page'] > 1) {
             $page = $req['page'];
-            $browesalljobpost = DB::table('job_posts')
-                ->select('job_posts.*', 'emp.company_name')
+            $browesalljobpost = JobPost::select('job_posts.*', 'emp.company_name')
                 ->leftjoin('employers as emp', 'emp.user_id', '=', 'job_posts.user_id');
             if (!empty($main_data[1])) {
                 $browesalljobpost->where('job_posts.job_name', 'LIKE', '%' . $main_data[1]->search_val . '%')
@@ -263,8 +261,7 @@ class JobController extends Controller
             $browesalljob = $browesalljobpost->orderBy('job_posts.job_name')->skip($dds)->take($per_page)->get()->toArray();
         } else {
             $page = 1;
-            $browesalljobpost = DB::table('job_posts')
-                ->select('job_posts.*', 'emp.company_name')
+            $browesalljobpost = JobPost::select('job_posts.*', 'emp.company_name')
                 ->leftjoin('employers as emp', 'emp.user_id', '=', 'job_posts.user_id');
             if (!empty($main_data[1])) {
                 $browesalljobpost->where('job_posts.job_name', 'LIKE', '%' . $main_data[1]->search_val . '%')
@@ -340,7 +337,7 @@ class JobController extends Controller
     public function viewJobDetails($id)
     {
         $id = base64_decode($id);
-        $view_Job_Detail = DB::table('job_posts')->select('*')->where('id', $id)->get()->first();
+        $view_Job_Detail = JobPost::select('*')->where('id', $id)->get()->first();
 
         return view('Frontend.job_details', ['job_info' => $view_Job_Detail]);
     }

@@ -297,8 +297,5 @@
 <script src="js/dz.carousel.js"></script><!-- SORTCODE FUCTIONS  -->
 <script src="js/dz.ajax.js"></script><!-- CONTACT JS  -->
  
-
 </body>
-
-
 </html>
