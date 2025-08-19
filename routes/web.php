@@ -64,7 +64,7 @@ Route::group(['middleware' => ['App\Http\Middleware\IsLogin']], function () {
     Route::post('update-candidate/{id}', [DashboardCotroller::class, 'updateCndData']);
     Route::get('candidate-data-page-emp', [DashboardCotroller::class, 'candidateDataEmployer']);
     Route::get('employer-data-self', [DashboardCotroller::class, 'employerSelf']);
-    Route::get('add-job-post', [DashboardCotroller::class, 'addJobPost']);
+    // Route::post('add-job-post', [DashboardCotroller::class, 'addJobPost']);
     Route::post('insert-job-post', [DashboardCotroller::class, 'insertJobPost']);
     Route::get('job-post', [DashboardCotroller::class, 'PostJob']);
     Route::get('add-job-post', [DashboardCotroller::class, 'getJobPosts']);

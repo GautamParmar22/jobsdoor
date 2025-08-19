@@ -11,8 +11,6 @@
 				    </div>
 				    
 			    </div><!--//row-->
-			   
-			    
 			    <div class="tab-content" id="orders-table-tab-content">
 			        <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
 					    <div class="app-card app-card-orders-table shadow-sm mb-5">

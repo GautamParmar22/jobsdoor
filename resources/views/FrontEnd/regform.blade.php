@@ -359,12 +359,6 @@
 </div>
 <!-- Employer Registration form END -->
 <script src="{{URL::asset('assets/js/bootstrap-datepicker.js')}}"></script><!-- DATEPICKER JS  -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" ></script> --><!--Online jquery CDN-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 <script text="text/javascript">
     var APP_URL = '{{ env('APP_URL') }}';
     $('.start_job').datepicker();

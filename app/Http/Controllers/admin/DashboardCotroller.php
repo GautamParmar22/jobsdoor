@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\Helper;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,16 +12,15 @@ use Illuminate\Support\Facades\DB;
 use Validate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use  App\Models\User;
-use App\Models\JobPostsModel;
+use App\Models\JobPost;
 use App\Models\EducationDetail;
 use App\Models\Employer;
 use App\Models\JobPreference;
 use App\Models\PersonalDetail;
 use App\Models\EmpHistory;
-use App\Models\JobPost;
-
+use PHPUnit\TextUI\Help;
 
 class DashboardCotroller extends Controller
 {
@@ -34,33 +34,33 @@ class DashboardCotroller extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function DashboardPage(Request $request)
-    {   
-             $user = Auth::user();
-            $counts = User::selectRaw("
+    {
+        $user = Auth::user();
+        $counts = User::selectRaw("
                     COUNT(*) as total_users,
                     SUM(CASE WHEN role_type = 2 THEN 1 ELSE 0 END) as employers,
                     SUM(CASE WHEN role_type = 3 THEN 1 ELSE 0 END) as candidates,
                     SUM(CASE WHEN role_type = 3 AND status = 1 THEN 1 ELSE 0 END) as active_candidates,
                     SUM(CASE WHEN role_type = 3 AND status = 0 THEN 1 ELSE 0 END) as inactive_candidates
                 ")
-                ->where('role_type', '!=', 1)
-                ->where('is_delete', 0)
-                ->first();
+            ->where('role_type', '!=', 1)
+            ->where('is_delete', 0)
+            ->first();
 
-            $recentUsers      = User::where('role_type', '!=', 1)->where('is_delete', 0)->latest()->limit(5)->get();
-            $recentCandidates = User::where('role_type', 3)->where('is_delete', 0)->latest()->limit(5)->get();
+        $recentUsers      = User::where('role_type', '!=', 1)->where('is_delete', 0)->latest()->limit(5)->get();
+        $recentCandidates = User::where('role_type', 3)->where('is_delete', 0)->latest()->limit(5)->get();
 
-            return view('Admin.dashboard', [
-                'user'              => $user,
-                'totsluser'         => $counts->total_users,
-                'employer'          => $counts->employers,
-                'candidate'         => $counts->candidates,
-                'recentusers'       => $recentUsers,
-                'total_candidate'   => $counts->candidates,
-                'recent_candidate'  => $recentCandidates,
-                'active_candidate'  => $counts->active_candidates,
-                'inactive_candidate'=> $counts->inactive_candidates,
-            ]);
+        return view('Admin.dashboard', [
+            'user'              => $user,
+            'totsluser'         => $counts->total_users,
+            'employer'          => $counts->employers,
+            'candidate'         => $counts->candidates,
+            'recentusers'       => $recentUsers,
+            'total_candidate'   => $counts->candidates,
+            'recent_candidate'  => $recentCandidates,
+            'active_candidate'  => $counts->active_candidates,
+            'inactive_candidate' => $counts->inactive_candidates,
+        ]);
     }
 
     public function AccountData()
@@ -126,15 +126,16 @@ class DashboardCotroller extends Controller
         }
     }
 
+
     public function allUserData(Request $request)
-    {      
+    {
         $alluserdata = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
             ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
             ->leftjoin('personal_details as candidate', 'users.id', '=', 'candidate.user_id')
             ->where('role_type', '!=', 1)
             ->where('is_delete', 0)
-            ->get();   
-        
+            ->get();
+
         return view('Admin.allusers', ['alluserdata' => $alluserdata]);
     }
 
@@ -150,22 +151,18 @@ class DashboardCotroller extends Controller
     }
     public function employerData(Request $request)
     {
-        $req = $request->all();
-
         $allemployers = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
-                            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
-                            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
-                            ->where('role_type', '=', 2)
-                            ->where('is_delete', 0)
-                            ->get();
+            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
+            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
+            ->where('role_type', '=', 2)
+            ->where('is_delete', 0)
+            ->get();
 
-        return view('Admin.employer_data', ['allemployers' => $allemployers]);
+        return view('Admin.employer.employer_data', ['allemployers' => $allemployers]);
     }
 
     public function deleteEmployers(Request $request, $id)
     {
-        $req = $request->all();
-
         $isDelete = 1;
         $data = array('is_delete' => $isDelete);
         User::where('id', $id)->update($data);
@@ -174,20 +171,17 @@ class DashboardCotroller extends Controller
     }
     public function candidateData(Request $request)
     {
-        $req = $request->all();
         $allcandidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
-                            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
-                            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
-                            ->where('role_type', '=', 3)
-                            ->where('is_delete', 0)
-                            ->get();
-      
-        return view('Admin.candidate_data', ['allcandidate' => $allcandidate]);
+            ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
+            ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
+            ->where('role_type', '=', 3)
+            ->where('is_delete', 0)
+            ->get();
+
+        return view('Admin.candidate.candidate_data', ['allcandidate' => $allcandidate]);
     }
     public function  deleteCandidates(Request $request, $id)
     {
-        $req = $request->all();
-
         $isDelete = 1;
         $data = array('is_delete' => $isDelete);
         User::where('id', $id)->update($data);
@@ -203,20 +197,19 @@ class DashboardCotroller extends Controller
             ->where('users.id', $id)
             ->get()->first();
 
-        return view('Admin.employer_view', ['emp_view' => $ViewEmployers]);
+        return view('Admin.employer.employer_view', ['emp_view' => $ViewEmployers]);
     }
     public function viewCandidate($id)
     {
         $id = base64_decode($id);
-
         $viewCandidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name')->where('users.id', $id)->get()->first();
 
         $getPersonalDetails = PersonalDetail::where('user_id', '=', $id)->first();
         $getEducationDetails = EducationDetail::where('user_id', '=', $id)->first();
-        $getEmpHistory = EmpHistory::where('user_id', '=', $id)->get()->toArray();
+        $getEmpHistory = EmpHistory::where('user_id', '=', $id)->get();
         $getJobPreference = JobPreference::where('user_id', '=', $id)->get()->first();
 
-        return view('Admin.candidate_view', ['candiadte_view' => $viewCandidate, 'getPersonalDetails' => $getPersonalDetails, 'education_details' => $getEducationDetails, 'emp_history' => $getEmpHistory, 'job_preference' => $getJobPreference]);
+        return view('Admin.candidate.candidate_view', ['candiadte_view' => $viewCandidate, 'getPersonalDetails' => $getPersonalDetails, 'education_details' => $getEducationDetails, 'emp_history' => $getEmpHistory, 'job_preference' => $getJobPreference]);
     }
 
     public function employetEdit(Request $request, $id)
@@ -226,11 +219,10 @@ class DashboardCotroller extends Controller
             ->where('user_id', '=', $id)
             ->get()->first();
 
-        return view('Admin.employer_edit', ['getEmployers' => $getEmployer]);
+        return view('Admin.employer.employer_edit', ['getEmployers' => $getEmployer]);
     }
     public function updateEmpData(Request $request, $id)
     {
-        $req = $request->all();
         //form 1 data
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
@@ -274,13 +266,12 @@ class DashboardCotroller extends Controller
 
         $editJobPreference = JobPreference::select('*')->where('user_id', '=', $id)->get()->first();
 
-        return view('Admin.candidate_edit', ['getCandidate' => $Candidate, 'personal' => $editPersonalDetails, 'editEmplyemntHitory' => $editEmpHistory, 'education' => $editEducationDetails, 'editJobPreference' => $editJobPreference]);
+        return view('Admin.candidate.candidate_edit', ['getCandidate' => $Candidate, 'personal' => $editPersonalDetails, 'editEmplyemntHitory' => $editEmpHistory, 'education' => $editEducationDetails, 'editJobPreference' => $editJobPreference]);
     }
 
     public function updateCndData(Request $request, $id)
     {
         $req = $request->all();
-dd($req);
         //Candidate Personal Details data 
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
@@ -354,22 +345,22 @@ dd($req);
             ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
             ->where('role_type', '=', 3)
             ->where('is_delete', 0)
-            ->get()->toArray();
+            ->get();
 
-        return view('Admin.candidate_data', ['allcandidate' => $allcandidate]);
+        return view('Admin.candidate.candidate_data', ['allcandidate' => $allcandidate]);
     }
     public function employerSelf(Request $request)
     {
-        $user = Auth::user()->id;  
+        $user = Auth::user()->id;
         $allemployers = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name', 'emp.official_title', 'emp.mobile_no as emp_mobile', 'candidate.mobile_no as cnd_mobile')
             ->leftjoin('employers as emp', 'users.id', '=', 'emp.user_id')
             ->leftjoin('personal_details as candidate', 'users.id', 'candidate.user_id')
             ->where('role_type', '=', 2)
             ->where('is_delete', 0)
             ->where('users.id', '=', $user)
-            ->get()->toArray();
+            ->get();
 
-        return view('Admin.employer_data', ['allemployers' => $allemployers]);
+        return view('Admin.employer.employer_data', ['allemployers' => $allemployers]);
     }
 
     public function addJobPost()
@@ -381,7 +372,7 @@ dd($req);
     public function insertJobPost(Request $request)
     {
         $user_id = Auth::user()->id;
-        $jobposts = new JobPostsModel;
+        $jobposts = new JobPost;
         $jobposts->user_id = $user_id;
         $jobposts->job_name = $request->job_name;
         $jobposts->no_of_vacancy = $request->no_of_vacancy;
@@ -418,19 +409,18 @@ dd($req);
     {
 
         $user_id = Auth::user()->id;
-        $getJobPost = DB::table('job_posts')
-            ->select('*')
+        $getJobPost = JobPost::select('*')
             ->where('user_id', '=', $user_id)
-            ->where('deleted_at', '=', null)
-            ->get()
-            ->toArray();
+            ->whereNull('deleted_at')
+            ->get();
+            
         return view('Admin.add_job_post', ['job_posts' => $getJobPost]);
     }
 
     public function viewJobPost($id)
     {
         $id = base64_decode($id);
-        $view_job_post = JobPostsModel::where('id', $id)->where('deleted_at', '=', null)->get()->first();
+        $view_job_post = JobPost::where('id', $id)->where('deleted_at', '=', null)->get()->first();
 
         return view('Admin.view_job_post', ['display_job_posts' => $view_job_post]);
     }
@@ -438,14 +428,14 @@ dd($req);
     public function deleteJobPost(Request $request, $id)
     {
         $id = base64_decode($id);
-        $job = JobPostsModel::find($id);
+        $job = JobPost::find($id);
         $job->delete(); // will soft delete the job
         return  Redirect::to('add-job-post')->with('error', 'Record Deleted successfully.');
     }
 
     public function editJobPost(Request $request, $id)
     {
-        $edit_post = JobPostsModel::findOrFail($id);
+        $edit_post = JobPost::findOrFail($id);
         return view('Admin.edit_job_post', compact('edit_post'));
     }
 
@@ -474,7 +464,7 @@ dd($req);
 
         $updatejobpost = array('user_id' => $user_id, 'job_name' => $job_name, 'no_of_vacancy' => $no_of_vacancy, 'job_description' => $job_description, 'key_skills' => $key_skills, 'qualification' => $qualification, 'salary_to' => $salary_to, 'salary_from' => $salary_from, 'location' => $location, 'type_of_job' => $type_of_job, 'status' => $status, 'indroduction_pdf' => $upload_introduction_pdf);
 
-        JobPostsModel::whereId($id)->update($updatejobpost);
+        JobPost::whereId($id)->update($updatejobpost);
         return  Redirect::to('add-job-post')->with('success', 'Data is successfully updated');
     }
 
@@ -485,22 +475,19 @@ dd($req);
 
     public function allJobPostsList(Request $request)
     {
-        $req = $request->all();
-        $alljobpost = DB::table('job_posts')
-            ->select('job_posts.*', 'emp.company_name')
+        $alljobpost = JobPost::select('job_posts.*', 'emp.company_name')
             ->leftjoin('employers as emp', 'emp.user_id', '=', 'job_posts.user_id')
             ->where('job_posts.deleted_at', '=', null)
-            ->get()->toArray();
+            ->get();
 
         return view('Admin.all_job_post', ['alljobdata' => $alljobpost]);
     }
     public function viewJob($id)
     {
         $id = base64_decode($id);
-        $viewjobpost = DB::table('job_posts')
-            ->select('job_posts.*', 'emp.company_name')
+        $viewjobpost = JobPost::select('job_posts.*', 'emp.company_name')
             ->leftjoin('employers as emp', 'job_posts.user_id', '=', 'emp.user_id')
-            ->where('deleted_at', '=', null)
+            ->whereNull('job_posts.deleted_at')
             ->where('job_posts.id', $id)
             ->get()->first();
         return view('Admin.view_job', ['viewjobdata' => $viewjobpost]);
@@ -509,7 +496,7 @@ dd($req);
     public function deleteJob(Request $request, $id)
     {
         $id = base64_decode($id);
-        $job = JobPostsModel::find($id);
+        $job = JobPost::find($id);
         $job->delete(); // will soft delete the job
         return  Redirect::to('all-job-posts')->with('error', 'Record Deleted successfully.');
     }
@@ -517,10 +504,9 @@ dd($req);
     public function editJob(Request $request, $id)
     {
         $id = base64_decode($id);
-        $viewjobpost = DB::table('job_posts')
-            ->select('job_posts.*', 'emp.company_name')
+        $viewjobpost = JobPost::select('job_posts.*', 'emp.company_name')
             ->leftjoin('employers as emp', 'job_posts.user_id', '=', 'emp.user_id')
-            ->where('deleted_at', '=', null)
+            ->whereNull('job_posts.deleted_at')
             ->where('job_posts.id', $id)
             ->get()->first();
         return view('Admin.edit_job', ['editjob' => $viewjobpost]);
@@ -549,7 +535,7 @@ dd($req);
         }
         $updatejobpost = array('job_name' => $job_name, 'no_of_vacancy' => $no_of_vacancy, 'job_description' => $job_description, 'key_skills' => $key_skills, 'qualification' => $qualification, 'salary_to' => $salary_to, 'salary_from' => $salary_from, 'location' => $location, 'type_of_job' => $type_of_job, 'status' => $status, 'indroduction_pdf' => $upload_introduction_pdf);
 
-        JobPostsModel::whereId($id)->update($updatejobpost);
-        return  Redirect::to('all-job-posts')->with('success', 'Data is successfully updated');
+        JobPost::whereId($id)->update($updatejobpost);
+        return  Redirect::to('all-job-posts')->with('success', 'Job post data updated successfully');
     }
 }

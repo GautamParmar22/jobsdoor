@@ -160,52 +160,7 @@
                        </h2>
                     </div>
                     
-                        <!--<p class="site-button button-sm">Find Jobs, Employment & Career Opportunities</p>
-						<h2>Search Between More Them <br/> <span class="text-primary">50,000</span> Open Jobs.</h2>
-						<form class="dezPlaceAni">
-							<div class="row">
-								<div class="col-lg-4 col-md-6">
-									<div class="form-group">
-										<label>Job Title, Keywords, or Phrase</label>
-										<div class="input-group">
-											<input type="text" class="form-control" placeholder="">
-											<div class="input-group-append">
-											  <span class="input-group-text"><i class="fa fa-search"></i></span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-3 col-md-6">
-									<div class="form-group">
-										<label>City, State or ZIP</label>
-										<div class="input-group">
-											<input type="text" class="form-control" placeholder="">
-											<div class="input-group-append">
-											  <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-											</div>
-										</div>
-									</div>
-								</div>-->
-								<!--div class="col-lg-3 col-md-6">
-									<div class="form-group">
-										<select>
-											<option>Select Sector</option>
-											<option>Construction</option>
-											<option>Corodinator</option>
-											<option>Employer</option>
-											<option>Financial Career</option>
-											<option>Information Technology</option>
-											<option>Marketing</option>
-											<option>Quality check</option>
-											<option>Real Estate</option>
-											<option>Sales</option>
-											<option>Supporting</option>
-											<option>Teaching</option> 
-										</select>
-									</div>
-								</div>
-								<div class="col-lg-2 col-md-6">
-									<button type="submit" class="site-button btn-block">Find Job</button-->
+                       
 								</div>
 							</div>
 						</form>
