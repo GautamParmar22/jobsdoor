@@ -40,7 +40,7 @@ jobs:
           DB_PORT: 3306
           DB_DATABASE: jobsdoor
           DB_USERNAME: root
-          DB_PASSWORD: ""
+          DB_PASSWORD: root
         run: |
           sudo systemctl start mysql
           mysql -u root -e "CREATE DATABASE IF NOT EXISTS jobsdoor;"

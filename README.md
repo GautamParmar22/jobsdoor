@@ -39,5 +39,5 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For further inquiries, contact [gp.parmar226@gmail.com](mailto:gp.parmar226@gmail.com).
+For further inquiries, contact [gp.parmar556@gmail.com](mailto:gp.parmar556@gmail.com) Or [gp.parmar226@gmail.com](mailto:gp.parmar226@gmail.com).
 
