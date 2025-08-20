@@ -7,8 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-//use Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
@@ -65,7 +64,7 @@ class LoginController extends Controller
             if ($validator->fails()) {
                 return back()->withInput()->withErrors($validator->errors());
             }
-//            dd(Auth::attempt(['email' => $request->email, 'password' => request('password')]));
+      
             if (Auth::attempt(['email' => $request->email, 'password' => request('password')])) {
                 /*if (Auth::user()->deleted_at != '') {
                     Auth::logout();

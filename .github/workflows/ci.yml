@@ -14,6 +14,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: jobsdoor
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,7 +47,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Setup MySQL
+      - name: Run migrations
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -41,10 +55,7 @@ jobs:
           DB_DATABASE: jobsdoor
           DB_USERNAME: root
           DB_PASSWORD: root
-        run: |
-          sudo systemctl start mysql
-          mysql -u root -e "CREATE DATABASE IF NOT EXISTS jobsdoor;"
-          php artisan migrate --force
+        run: php artisan migrate --force
 
       - name: Cache configuration
         run: |
@@ -52,5 +63,11 @@ jobs:
           php artisan route:cache
 
       - name: Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: jobsdoor
+          DB_USERNAME: root
+          DB_PASSWORD: root
         run: php artisan test
-
