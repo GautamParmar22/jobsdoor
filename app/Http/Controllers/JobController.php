@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Validate;
 use Auth;
 use App\Http\Requests\PaginateRequest;
-use App\Models\JobPostsModel;
+use App\Models\JobPost;
 
 class JobController extends Controller
 {

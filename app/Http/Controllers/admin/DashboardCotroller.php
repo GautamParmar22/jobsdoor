@@ -257,14 +257,10 @@ class DashboardCotroller extends Controller
     public function candidateEdit(Request $request, $id)
     {
         $Candidate = User::select('users.id', 'users.role_type', 'users.status', 'users.email', 'users.name')->where('users.id', $id)->get()->first();
-
         $editPersonalDetails = PersonalDetail::select('*')->where('user_id', '=', $id)->first();
-
         $editEducationDetails = EducationDetail::select('*')->where('user_id', '=', $id)->first();
-
-        $editEmpHistory = EmpHistory::select('*')->where('user_id', '=', $id)->get();
-
-        $editJobPreference = JobPreference::select('*')->where('user_id', '=', $id)->get()->first();
+        $editEmpHistory = EmpHistory::select('*')->where('user_id', '=', $id)->first();
+        $editJobPreference = JobPreference::select('*')->where('user_id', '=', $id)->first();
 
         return view('Admin.candidate.candidate_edit', ['getCandidate' => $Candidate, 'personal' => $editPersonalDetails, 'editEmplyemntHitory' => $editEmpHistory, 'education' => $editEducationDetails, 'editJobPreference' => $editJobPreference]);
     }
@@ -303,8 +299,7 @@ class DashboardCotroller extends Controller
         $company_size = $req['company_size'];
         $important_roll = $req['important_roll'];
         $tell_yourself = $req['tell_yourself'];
-
-
+        
         $candidatePersonalDetails = array('firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'mobile_no' => $mobile_no, 'address' => $address, 'city' => $city, 'start_job' => $start_job, 'zip_code' => $zip_code, 'reach_you' => $reach_you, 'top_skills' => $top_skills);
 
         $userupdate = array('name' => $name, 'status' => $status);
@@ -314,7 +309,6 @@ class DashboardCotroller extends Controller
         $job_preference_data = array('user_id' => $id, 'apply_job_title' => $apply_job_title, 'job_open' => $job_open, 'salary_from' => $salary_from, 'salary_to' => $salary_to, 'prefer_work' => $prefer_work, 'company' => $company, 'company_size' => $company_size, 'important_roll' => $important_roll, 'tell_yourself' => $tell_yourself);
 
         $detele_emp_history = EmpHistory::where('user_id', $id)->delete();
-
 
         if (isset($req['emp_history']) && !empty($req['emp_history'])) {
             $Candidate_Emp_History = $req['emp_history'];
@@ -407,7 +401,6 @@ class DashboardCotroller extends Controller
 
     public function getJobPosts(Request $request)
     {
-
         $user_id = Auth::user()->id;
         $getJobPost = JobPost::select('*')
             ->where('user_id', '=', $user_id)

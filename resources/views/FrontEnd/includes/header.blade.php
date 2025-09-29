@@ -35,7 +35,7 @@
                         <a href="{{url('/')}}">Home </a>
                     </li>
                     <li class="">
-                        <a href="{{url('employer')}}">Employer Registration</a>
+                        <a href="{{url('employerpage.index')}}">Employer Registration</a>
                     </li>
                     <li class="">
                         <a href="#">For Candidates <i class="fa fa-chevron-down"></i></a>

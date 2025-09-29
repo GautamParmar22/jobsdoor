@@ -57,14 +57,14 @@
 															{{ @$candidate->emp_mobile }}
 														@else
 															{{ @$candidate->cnd_mobile }}
-														@endif;
+														@endif
 													</span>
 												</td>
 												<td class="cell">
 													@if($candidate->status)
-														<span class="badge bg-success">Active</span>;
+														<span class="badge bg-success">Active</span>
 													@else
-														<span class="badge bg-danger">Inactive</span>;
+														<span class="badge bg-danger">Inactive</span>
 													@endif
 												</td>
 												<td class="cell">

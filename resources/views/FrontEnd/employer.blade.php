@@ -39,7 +39,7 @@
                 <div class="col-md-12 m-b30">
                     <div class="p-a30 border-1  max-w500 m-auto">
                         <div class="tab-content">
-                            <form action="{{url('insert')}}" method="POST" enctype='multipart/form-data' class="tab-pane active" id="msform">
+                            <form action="{{url('employerpage.store')}}" method="POST" enctype='multipart/form-data' class="tab-pane active" id="msform">
                                 @csrf
                                     <ul id="progressbar">
                                         <li class="active" id="company"><strong style="padding: 0 0 0 85px;">Company</strong></li>

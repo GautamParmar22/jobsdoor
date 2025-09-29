@@ -20,7 +20,7 @@ use App\Http\Controllers\admin\DashboardCotroller;
 |
 */
 
-Route::resource('employer', \App\Http\Controllers\EmployerController::class);
+Route::resource('employerpage', \App\Http\Controllers\EmployerController::class);
 
 // Candidate and Employer Routes
 Route::get('/', [JobController::class, 'index']);

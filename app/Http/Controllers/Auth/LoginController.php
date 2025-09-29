@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use App\Helpers\Helper;
+
 
 class LoginController extends Controller
 {
@@ -64,24 +66,18 @@ class LoginController extends Controller
             if ($validator->fails()) {
                 return back()->withInput()->withErrors($validator->errors());
             }
-      
+    
             if (Auth::attempt(['email' => $request->email, 'password' => request('password')])) {
                 /*if (Auth::user()->deleted_at != '') {
                     Auth::logout();
                     return  Redirect::to('/login-page')->with('error', 'Your account is not active yet, please contact admin.');
-                }*/
-                $user = Auth::user();
-               
-                //return view('Admin.dashboard',['dashboard_data'=>$user]);
-                //echo "<pre/>"; print_r($user);die;
-                //echo "login";die;
+                }*/                
                 return  Redirect::to('/dashboard-page')->with('success', 'You have logged in successfully.');
             } else {
                 //echo "Role Type is Wrong";dd();
                 return  Redirect::to('/login-page')->with('error',  'Invalid Credentials.');
             }
-        } catch (\Exception $e) {
-            //return Helper::fail([], $e->getMessage());
+        } catch (\Exception $e) {            
              return $e->getMessage();
             echo "<pre/>"; print_r($e);die;
         }
