@@ -26,7 +26,7 @@ class EmployerController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    { dd($request->all());
         $req = $request->all();
         //echo "<pre/>"; print_r($req);dd();  
         //form wizard 1 data
